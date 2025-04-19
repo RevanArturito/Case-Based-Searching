@@ -36,3 +36,22 @@ def BinaryConvert(pairs: List[Pair]) -> List[Pair]:
         x2 = format(pair.x2, 'b') if pair.x2 >= 0 else "-" + format(abs(pair.x2), 'b')        
         binaries.append(Pair(x1, x2))
     return binaries
+
+# Fungsi untuk me-convert bilangan integer menjadi 5 digit binary
+def FitnessValues(pairs: List[Pair]) -> List[float]:
+    obj_values = [ObjectiveFunction(p.x1, p.x2) for p in pairs]
+    min_val = min(obj_values)
+    epsilon = 1e-6  # Biar ngga nol
+
+    # Shift jika ada nilai negatif
+    if min_val < 0:
+        shifted_values = [v + abs(min_val) + epsilon for v in obj_values]
+    else:
+        shifted_values = obj_values
+
+    # totalnya juga dari nilai yang sudah di shift
+    total = sum(shifted_values)
+
+    fitness = [round(v / total, 3) for v in shifted_values]
+    return fitness
+
