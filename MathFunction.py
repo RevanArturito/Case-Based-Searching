@@ -55,3 +55,26 @@ def FitnessValues(pairs: List[Pair]) -> List[float]:
     fitness = [round(v / total, 3) for v in shifted_values]
     return fitness
 
+# Fungsi yang digunakan untuk menghitung Cumulative
+def CumFitness(fitness_list: List[float]) -> List[float]:
+    cumulative = []
+    total = 0.0
+    for cf in fitness_list:
+        cumulative.append(round(total, 3))
+    return cumulative
+
+
+def cumulativeRange(initValue, fitness):
+    return f'{initValue}-{initValue+fitness}'
+
+def createCumulativeList(pairs):
+    total = 0
+    cumulativeList = []
+    for fitness in FitnessValues(pairs):
+        cumulativeList.append(cumulativeRange(total, fitness))
+        total += fitness
+    return cumulativeList
+# Fungsi yang digunakan untuk membuat daerah interval
+#def IntervalCum(interval_list: List[float]) -> List[float]:
+ #   return f'{interval_list[0]}-{interval_list[1]}'
+    

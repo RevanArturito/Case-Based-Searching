@@ -37,20 +37,23 @@ for i in range(DATA_COUNT):
 HeaderUp2()
 
 
+
 # Jika ada nilai negatif pada Objective, maka nilai akan di-shift
 # Kemungkinan besar ada nilai fitness pada akhirnya akan ada yg 0,
 # Soalnya yang tadinya bernilai negatif (Individu terburuk) memiliki nilai Fitness 0
 print()
 if Objective [0] < 0 or Objective [1] < 0 or Objective [2] < 0:
     fitnessList = FitnessValues(pairs)
+    cumulativeList = createCumulativeList(pairs)
     print("Terdapat nilai negatif pada Objective.\nMaka nilai Objective akan di-shift")
     Tahap1Header()
     for i in range(DATA_COUNT):
-        print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {Objective[i]:^20} | {fitnessList[i]:^20} | ")
+        print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {Objective[i]:^20} | {fitnessList[i]:^20} | {cumulativeList[i]}")
     HeaderUp2()
 
-    
-    
+
+
+  
 # pairsBinary = BinaryConvert(pairs)
 # print()
 # print("Dalam Binary:")
