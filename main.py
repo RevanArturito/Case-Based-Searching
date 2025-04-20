@@ -5,36 +5,33 @@ from header import *
 
 # 3 Pasang data 
 DATA_COUNT = 3
+
+# TAHAP 1 DATA
 pairs: List[Pair] = RandomVal(DATA_COUNT)
-
 pairsBinary: List[Pair] = []
-
 Objective: List[float] = []
+fitnessList: List[float] = []
+CumFitnessList: List[float] = []
+Interval: List[str] = []
 
 # Menampilkan data yang telah di generate
 print("----------------------------TAHAP 1 -----------------------------")
 print()
 
 # Menampilkan nilai dari Fungsi Objective berdasarkan data yang ada
-ObjectiveHeader()
 for i in range(DATA_COUNT):
     o = ObjectiveFunction(pairs[i].x1, pairs[i].x2)
-    print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {o:^20} |")
     Objective.append(o)
-HeaderUp1()
-
+printObjective(pairs, Objective, DATA_COUNT)
 
 # Menampilkan jumlah atau sum dari nilai Fungsi Objective
-print()
-print(f"Sum Value:  {SumPairValue(pairs)}")    
-print()
+printSumValue(pairs)
 
 # Menampilkan nilai Fitness[i] berdasarkan data yang ada
-Tahap1Header()
 for i in range(DATA_COUNT):
     f = FitnessFunction(pairs[i].x1, pairs[i].x2, SumPairValue(pairs))
-    print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {Objective[i]:^20} | {f:^20} |")
-HeaderUp2()
+    fitnessList.append(f)
+printFitness(pairs, Objective, fitnessList, DATA_COUNT)
 
 
 # Jika ada nilai negatif pada Objective, maka nilai akan di-shift
@@ -44,13 +41,19 @@ print()
 if Objective [0] < 0 or Objective [1] < 0 or Objective [2] < 0:
     fitnessList = FitnessValues(pairs)
     print("Terdapat nilai negatif pada Objective.\nMaka nilai Objective akan di-shift")
-    Tahap1Header()
     for i in range(DATA_COUNT):
-        print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {Objective[i]:^20} | {fitnessList[i]:^20} | ")
-    HeaderUp2()
+        fitnessList.append(f)
+    printFitness(pairs, Objective, fitnessList, DATA_COUNT)
 
+# Nilai kumulatif dari nilai Fitness
+CumFitnessList = CumFitness(fitnessList)
+# Batas bawah dan batas atas (Interval)
+Interval = IntervalRange(0, CumFitnessList)
+# Menampilkan data TAHAP 1
+printTahap1(pairs, Objective, fitnessList, CumFitnessList, Interval, DATA_COUNT)
     
     
+
 # pairsBinary = BinaryConvert(pairs)
 # print()
 # print("Dalam Binary:")

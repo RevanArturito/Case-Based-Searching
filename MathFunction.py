@@ -55,3 +55,25 @@ def FitnessValues(pairs: List[Pair]) -> List[float]:
     fitness = [round(v / total, 3) for v in shifted_values]
     return fitness
 
+# Fungsi untuk menghitung nilai kumulatif berdasarkan nilai Fitness yang ada
+def CumFitness(fitness_list: List[float]) -> List[float]:
+    cumulative = []
+    total = 0.0
+    for cf in fitness_list:
+        total += cf
+        cumulative.append(round(total, 3))
+    return cumulative
+
+# Fungsi untuk membuat Interval berdasarkan nilai cumulative yang ada
+def IntervalRange(batasKiri, cumulative: List[float]) -> List[str]:
+    interval = []
+    for cum in cumulative:
+        batasKanan = cum
+        interval.append(f"{batasKiri:.3f} – {batasKanan:.3f}")
+        # Mastiin kalau batas kiri biar ga lebih dari 1
+        if batasKanan + 0.001 > 1:
+            batasKiri = batasKiri
+        else:
+            batasKiri = batasKanan + 0.001
+    return interval
+
