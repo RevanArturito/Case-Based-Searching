@@ -19,6 +19,7 @@ print("----------------------------TAHAP 1 -----------------------------")
 print()
 
 # Menghitung nilai objective berdasarkan nilai x1 dan x2
+# Menghitung nilai objective berdasarkan nilai x1 dan x2
 for i in range(DATA_COUNT):
     o = ObjectiveFunction(pairs[i].x1, pairs[i].x2)
     Objective.append(o)
@@ -44,6 +45,8 @@ CumFitnessList = CumFitness(fitnessList)
 Interval = IntervalRange(0, CumFitnessList)
 # Menampilkan data TAHAP 1
 printTahap1(pairs, Objective, fitnessList, CumFitnessList, Interval, DATA_COUNT)
+
+
 
 
 

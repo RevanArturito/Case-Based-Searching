@@ -13,6 +13,16 @@ def Decode(binary_str: str) -> int:
     shifted = int(binary_str, 2)
     return shifted - 10
 
+# TAHAP 1 
+
+# Mengubah binary ke decimal and vice versa
+def Encode(value: int) -> str:
+    shifted = value + 10  
+    return format(shifted, '05b')
+def Decode(binary_str: str) -> int:
+    shifted = int(binary_str, 2)
+    return shifted - 10
+
 # Fungsi untuk menghitung nilai Objective
 def ObjectiveFunction(x1, x2 : int) -> float:
     result = -(math.sin(x1)*math.cos(x2)*math.tan(x1+x2) + (0.75)*math.exp(1-math.sqrt(x1**2)))
@@ -30,6 +40,7 @@ def RandomVal(n : int) -> List[Pair]:
 # Fungsi untuk menghitung nilai Fitness
 def FitnessFunction(x1, x2 : int, sum : float) -> float:
     return  round(1 / (1 + ObjectiveFunction(x1,x2)) ,3)
+    return  round(1 / (1 + ObjectiveFunction(x1,x2)) ,3)
 
 # Fungsi untuk menghitung nilai sum atau jumla dari keseluruhan nilai Objective
 def SumPairValue(pair : List[Pair]) -> float:
@@ -42,6 +53,7 @@ def SumPairValue(pair : List[Pair]) -> float:
 def FitnessValues(pairs: List[Pair]) -> List[float]:
     obj_values = [ObjectiveFunction(p.x1, p.x2) for p in pairs]
     min_val = min(obj_values)
+    epsilon = 1e-6  # Biar ngga enol
     epsilon = 1e-6  # Biar ngga enol
 
     # Shift jika ada nilai negatif
