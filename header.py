@@ -5,13 +5,16 @@ from MathFunction import *
 
 
 def HeaderUp1():
-    print("-------------------------------------------")
+    print("+--------+---------+----------------------+")
 
 def HeaderUp2():
-    print("------------------------------------------------------------------")
+    print("+--------+---------+----------------------+----------------------+")
     
 def HeaderUp3():
-    print("----------------------------------------------------------------------------------------------------------------")
+    print("+--------+---------+----------------------+----------------------+----------------------+----------------------+")
+    
+def HeaderUp4():
+    print("+---------------------+----------------------+----------------------+----------------------+")
     
 def HeaderDown():
     print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
@@ -30,6 +33,11 @@ def Tahap1Header():
     HeaderUp3()
     print(f"|{'x1':^7} | {'x2':^7} | {'Objective':^20} | {'Fitness':^20} | {'Cumulative':^20} | {'Interval':^20} |")
     HeaderUp3()
+    
+def Tahap2Header():
+    HeaderUp4()
+    print(f"|{'Kromosom Lama':^20} | {'Random R[k]':^20} | {'Interval':^20} | {'Kromosom Baru':^20} |")
+    HeaderUp4()
     
 def printObjective(pairs: List[Pair], o: List[float], n:int) -> None:
     ObjectiveHeader()
@@ -53,6 +61,15 @@ def printTahap1(pairs: List[Pair], o: List[float], f: List[float], cum: List[flo
     for i in range(n):
         print(f"|{pairs[i].x1:^7} | {pairs[i].x2:^7} | {o[i]:^20} | {f[i]:^20} | {cum[i]:^20} | {interval[i]:^20} | ")
     HeaderUp3()
+    
+    
+def printTahap2(parent) -> None:
+    Tahap2Header()
+    for idx, r, interval, kromosom in parent:
+        print(f"|{idx + 1:^20} | {r:^20} | {interval:^20} | {f'{idx+1} ({kromosom})':^20} | {Decode(kromosom[:5])} {Decode(kromosom[5:])}")
+    HeaderUp4()
+    
+
     
 
     

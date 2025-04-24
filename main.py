@@ -18,14 +18,10 @@ Interval: List[str] = []
 print("----------------------------TAHAP 1 -----------------------------")
 print()
 
-# Menampilkan nilai dari Fungsi Objective berdasarkan data yang ada
+# Menghitung nilai objective berdasarkan nilai x1 dan x2
 for i in range(DATA_COUNT):
     o = ObjectiveFunction(pairs[i].x1, pairs[i].x2)
     Objective.append(o)
-printObjective(pairs, Objective, DATA_COUNT)
-
-# Menampilkan jumlah atau sum dari nilai Fungsi Objective
-printSumValue(pairs)
 
 # Menampilkan nilai Fitness[i] berdasarkan data yang ada
 for i in range(DATA_COUNT):
@@ -41,9 +37,6 @@ print()
 if Objective [0] < 0 or Objective [1] < 0 or Objective [2] < 0:
     fitnessList = FitnessValues(pairs)
     print("Terdapat nilai negatif pada Objective.\nMaka nilai Objective akan di-shift")
-    for i in range(DATA_COUNT):
-        fitnessList.append(f)
-    printFitness(pairs, Objective, fitnessList, DATA_COUNT)
 
 # Nilai kumulatif dari nilai Fitness
 CumFitnessList = CumFitness(fitnessList)
@@ -51,12 +44,19 @@ CumFitnessList = CumFitness(fitnessList)
 Interval = IntervalRange(0, CumFitnessList)
 # Menampilkan data TAHAP 1
 printTahap1(pairs, Objective, fitnessList, CumFitnessList, Interval, DATA_COUNT)
-    
-    
 
-# pairsBinary = BinaryConvert(pairs)
-# print()
-# print("Dalam Binary:")
-# for pair in pairsBinary:
-#     # Menampilkan x1 dan x2 dalam bentuk binary
-#     print(f"{pair.x1}, {pair.x2}")
+
+
+# Menampilkan data yang telah di generate
+print()
+print()
+print("----------------------------TAHAP 2 -----------------------------")
+print()
+parents = selectParent(Interval, fitnessList, pairs)
+printTahap2(parents)
+
+
+
+
+
+    
