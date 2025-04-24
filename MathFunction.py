@@ -3,6 +3,16 @@ import random
 from typing import List
 from pair import *
 
+# TAHAP 1 
+
+# Mengubah binary ke decimal and vice versa
+def Encode(value: int) -> str:
+    shifted = value + 10  
+    return format(shifted, '05b')
+def Decode(binary_str: str) -> int:
+    shifted = int(binary_str, 2)
+    return shifted - 10
+
 # Fungsi untuk menghitung nilai Objective
 def ObjectiveFunction(x1, x2 : int) -> float:
     result = -(math.sin(x1)*math.cos(x2)*math.tan(x1+x2) + (0.75)*math.exp(1-math.sqrt(x1**2)))
@@ -19,7 +29,7 @@ def RandomVal(n : int) -> List[Pair]:
 
 # Fungsi untuk menghitung nilai Fitness
 def FitnessFunction(x1, x2 : int, sum : float) -> float:
-    return  round(ObjectiveFunction(x1,x2) / sum,3)
+    return  round(1 / (1 + ObjectiveFunction(x1,x2)) ,3)
 
 # Fungsi untuk menghitung nilai sum atau jumla dari keseluruhan nilai Objective
 def SumPairValue(pair : List[Pair]) -> float:
@@ -29,19 +39,10 @@ def SumPairValue(pair : List[Pair]) -> float:
     return round(sum,3)
 
 # Fungsi untuk me-convert bilangan integer menjadi 5 digit binary
-def BinaryConvert(pairs: List[Pair]) -> List[Pair]:
-    binaries = []
-    for pair in pairs:
-        x1 = format(pair.x1, 'b') if pair.x1 >= 0 else "-" + format(abs(pair.x1), 'b')
-        x2 = format(pair.x2, 'b') if pair.x2 >= 0 else "-" + format(abs(pair.x2), 'b')        
-        binaries.append(Pair(x1, x2))
-    return binaries
-
-# Fungsi untuk me-convert bilangan integer menjadi 5 digit binary
 def FitnessValues(pairs: List[Pair]) -> List[float]:
     obj_values = [ObjectiveFunction(p.x1, p.x2) for p in pairs]
     min_val = min(obj_values)
-    epsilon = 1e-6  # Biar ngga nol
+    epsilon = 1e-6  # Biar ngga enol
 
     # Shift jika ada nilai negatif
     if min_val < 0:
@@ -76,4 +77,33 @@ def IntervalRange(batasKiri, cumulative: List[float]) -> List[str]:
         else:
             batasKiri = batasKanan + 0.001
     return interval
+
+
+
+# TAHAP 2
+def parseInterval(interval_str):
+    parts = interval_str.replace("–", "-").split("-")
+    lower = float(parts[0].strip())
+    upper = float(parts[1].strip())
+    return lower, upper
+
+def selectParent(intervals, fitnesses, pairs):
+    selected_indices = []
+    used_indices = set()
+
+    while len(selected_indices) < 2:
+        r = round(random.uniform(0, 1), 3)
+        for i, interval in enumerate(intervals):
+            if i in used_indices or fitnesses[i] == 0:
+                continue
+            lower, upper = parseInterval(interval)
+            if lower <= r <= upper:
+                kromosom1, kromosom2 = Encode(pairs[i].x1), Encode(pairs[i].x2)
+                kromosom = kromosom1 + kromosom2
+                selected_indices.append((i, r, interval, kromosom))
+                used_indices.add(i)
+                break
+
+    return selected_indices
+
 
