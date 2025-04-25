@@ -16,7 +16,7 @@ def Decode(binary_str: str) -> int:
 # Fungsi untuk menghitung nilai Objective
 def ObjectiveFunction(x1, x2 : int) -> float:
     result = -(math.sin(x1)*math.cos(x2)*math.tan(x1+x2) + (0.75)*math.exp(1-math.sqrt(x1**2)))
-    return round(result,3)
+    return abs(round(result,3))
 
 # Fungsi untuk me-generate random integer dengan interval [-10,10]
 def RandomVal(n : int) -> List[Pair]:
@@ -28,33 +28,35 @@ def RandomVal(n : int) -> List[Pair]:
     return pairs
 
 # Fungsi untuk menghitung nilai Fitness
-def FitnessFunction(x1, x2 : int, sum : float) -> float:
-    return  round(1 / (1 + ObjectiveFunction(x1,x2)) ,3)
+def FitnessFunction(x1, x2: int, sum: float) -> float:
+    fitnessAwal = 1 / (1 + ObjectiveFunction(x1, x2))
+    return round(fitnessAwal / sum, 3)
+
 
 # Fungsi untuk menghitung nilai sum atau jumla dari keseluruhan nilai Objective
-def SumPairValue(pair : List[Pair]) -> float:
-    sum : float = 0.0
-    for p in pair:
-        sum += ObjectiveFunction(p.x1, p.x2)
-    return round(sum,3)
+def SumTotalFitness(pairs: List[Pair]) -> float:
+    total = 0.0
+    for p in pairs:
+        total += 1 / (1 + ObjectiveFunction(p.x1, p.x2))
+    return total
 
 # Fungsi untuk me-convert bilangan integer menjadi 5 digit binary
-def FitnessValues(pairs: List[Pair]) -> List[float]:
-    obj_values = [ObjectiveFunction(p.x1, p.x2) for p in pairs]
-    min_val = min(obj_values)
-    epsilon = 1e-6  # Biar ngga enol
+# def FitnessValues(pairs: List[Pair]) -> List[float]:
+#     obj_values = [ObjectiveFunction(p.x1, p.x2) for p in pairs]
+#     min_val = min(obj_values)
+#     epsilon = 1e-6  # Biar ngga enol
 
-    # Shift jika ada nilai negatif
-    if min_val < 0:
-        shifted_values = [v + abs(min_val) + epsilon for v in obj_values]
-    else:
-        shifted_values = obj_values
+#     # Shift jika ada nilai negatif
+#     if min_val < 0:
+#         shifted_values = [v + abs(min_val) + epsilon for v in obj_values]
+#     else:
+#         shifted_values = obj_values
 
-    # totalnya juga dari nilai yang sudah di shift
-    total = sum(shifted_values)
+#     # totalnya juga dari nilai yang sudah di shift
+#     total = sum(shifted_values)
 
-    fitness = [round(v / total, 3) for v in shifted_values]
-    return fitness
+#     fitness = [round(v / total, 3) for v in shifted_values]
+#     return fitness
 
 # Fungsi untuk menghitung nilai kumulatif berdasarkan nilai Fitness yang ada
 def CumFitness(fitness_list: List[float]) -> List[float]:
