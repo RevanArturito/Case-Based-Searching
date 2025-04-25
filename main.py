@@ -19,6 +19,7 @@ print("----------------------------TAHAP 1 -----------------------------")
 print()
 
 # Menghitung nilai objective berdasarkan nilai x1 dan x2
+# Menghitung nilai objective berdasarkan nilai x1 dan x2
 for i in range(DATA_COUNT):
     o = ObjectiveFunction(pairs[i].x1, pairs[i].x2)
     Objective.append(o)
@@ -46,6 +47,8 @@ printTahap1(pairs, Objective, fitnessList, CumFitnessList, Interval, DATA_COUNT)
 
 
 
+
+
 # Menampilkan data yang telah di generate
 print()
 print()
@@ -55,6 +58,14 @@ parents = selectParent(Interval, fitnessList, pairs)
 printTahap2(parents)
 
 
+print()
+print()
+print("----------------------------TAHAP 3 -----------------------------")
+print()
+
+children = crossover(parents)
+for idx, (kromosom_baru, x1, x2) in enumerate(children):
+    print(f"Child {idx + 1} : {kromosom_baru} -> x1: {x1}, x2: {x2}")
 
 
 

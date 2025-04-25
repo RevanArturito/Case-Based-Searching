@@ -1,7 +1,17 @@
 import math
 import random
-from typing import List
+from typing import List, Tuple
 from pair import *
+
+# TAHAP 1 
+
+# Mengubah binary ke decimal and vice versa
+def Encode(value: int) -> str:
+    shifted = value + 10  
+    return format(shifted, '05b')
+def Decode(binary_str: str) -> int:
+    shifted = int(binary_str, 2)
+    return shifted - 10
 
 # TAHAP 1 
 
@@ -31,7 +41,6 @@ def RandomVal(n : int) -> List[Pair]:
 def FitnessFunction(x1, x2: int, sum: float) -> float:
     fitnessAwal = 1 / (1 + ObjectiveFunction(x1, x2))
     return round(fitnessAwal / sum, 3)
-
 
 # Fungsi untuk menghitung nilai sum atau jumla dari keseluruhan nilai Objective
 def SumTotalFitness(pairs: List[Pair]) -> float:
@@ -108,4 +117,25 @@ def selectParent(intervals, fitnesses, pairs):
 
     return selected_indices
 
+# TAHAP 3
+def crossover(parents: List[tuple]) -> List[Tuple[str, int, int]]:
+    parent1 = parents[0][3]  # kromosom yang diambil dari tahap kedua (kromosom lama)
+    parent2 = parents[1][3]
 
+    crossover = 4  # 4 angka didepan bit yang akan di crossover antar parent
+    print(f"Crossover: {crossover}")
+
+    # penukaran bit terdepan dengan bit sisanya
+    child1 = parent1[:crossover] + parent2[crossover:]
+    child2 = parent2[:crossover] + parent1[crossover:]
+
+    # Decode mengubah nilai biner menjadi integer
+    child1_x1 = Decode(child1[:5])
+    child1_x2 = Decode(child1[5:])
+    child2_x1 = Decode(child2[:5])
+    child2_x2 = Decode(child2[5:])
+
+    return [
+        (child1, child1_x1, child1_x2),
+        (child2, child2_x1, child2_x2)
+    ]
