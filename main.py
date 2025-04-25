@@ -26,18 +26,17 @@ for i in range(DATA_COUNT):
 
 # Menampilkan nilai Fitness[i] berdasarkan data yang ada
 for i in range(DATA_COUNT):
-    f = FitnessFunction(pairs[i].x1, pairs[i].x2, SumPairValue(pairs))
+    f = FitnessFunction(pairs[i].x1, pairs[i].x2, SumTotalFitness(pairs))
     fitnessList.append(f)
-printFitness(pairs, Objective, fitnessList, DATA_COUNT)
 
 
 # Jika ada nilai negatif pada Objective, maka nilai akan di-shift
 # Kemungkinan besar ada nilai fitness pada akhirnya akan ada yg 0,
 # Soalnya yang tadinya bernilai negatif (Individu terburuk) memiliki nilai Fitness 0
-print()
-if Objective [0] < 0 or Objective [1] < 0 or Objective [2] < 0:
-    fitnessList = FitnessValues(pairs)
-    print("Terdapat nilai negatif pada Objective.\nMaka nilai Objective akan di-shift")
+# print()
+# if Objective [0] < 0 or Objective [1] < 0 or Objective [2] < 0:
+#     fitnessList = FitnessValues(pairs)
+#     print("Terdapat nilai negatif pada Objective.\nMaka nilai Objective akan di-shift")
 
 # Nilai kumulatif dari nilai Fitness
 CumFitnessList = CumFitness(fitnessList)
