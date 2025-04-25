@@ -42,6 +42,7 @@ def FitnessFunction(x1, x2: int, sum: float) -> float:
     fitnessAwal = 1 / (1 + ObjectiveFunction(x1, x2))
     return round(fitnessAwal / sum, 3)
 
+
 # Fungsi untuk menghitung nilai sum atau jumla dari keseluruhan nilai Objective
 def SumTotalFitness(pairs: List[Pair]) -> float:
     total = 0.0
