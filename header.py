@@ -39,6 +39,8 @@ def TahapCrossOverHeader():
     HeaderUp5()
     
 def TahapMutationHeader():
+    print()
+    print("Mutation")
     HeaderUp6()
     print(f"|{'NO':^20} | {'Kromosom Baru':^20} | {'x1':^7} | {'x2':^7}| {'Nilai Objective':^24} |")
     HeaderUp6()

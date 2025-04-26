@@ -39,7 +39,6 @@ def genetic_algorithm():
 
         # TAHAP 4 - Mutasi menggunakan fungsi mutasi baru
         mutation = mutasi(children, MUTATION_RATE)
-        print()
         printMutation(mutation)
 
         # Pengecekan nilai terbaik setelah semua anak dicek
