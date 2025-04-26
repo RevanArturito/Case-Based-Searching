@@ -104,7 +104,8 @@ def selectParent(intervals, fitnesses, pairs):
 def crossover(parents: List[tuple], crossoverRate: float) -> List[Tuple[str, int, int]]:
     # Cek apakah crossover dilakukan berdasarkan crossoverRate
     if random.random() > crossoverRate:
-        # print("Crossover tidak terjadi.")
+        print()
+        print("Crossover tidak terjadi. Nilai random lebih besar dari Crossover Rate")
         # Kembalikan parent tanpa perubahan
         return [
             (parents[0][3], Decode(parents[0][3][:5]), Decode(parents[0][3][5:])),
@@ -150,32 +151,31 @@ def crossover(parents: List[tuple], crossoverRate: float) -> List[Tuple[str, int
 
 def mutasi(children, mutationRate):
     hasilMutasi = []
-
+    i = 0
+    print()
     for kromosom in children:
-        kromosomAsli = kromosom[0]  # Kromosom hasil crossover (sebelum mutasi)
+        kromosomAsli = kromosom[0]  # Kromosom hasil crossover
         kromosomBaru = ""
 
         # Proses mutasi bit per bit
         for bit in kromosomAsli:
             if random.random() < mutationRate:
-                bitBaru = '1' if bit == '0' else '0'
-            else:
-                bitBaru = bit
-            kromosomBaru += bitBaru
+                bit = '1' if bit == '0' else '0'
+            kromosomBaru += bit
 
         # Decode hasil mutasi
-        x1 = Decode(kromosomBaru[:5])
-        x2 = Decode(kromosomBaru[5:])
+        x1Mutasi = Decode(kromosomBaru[:5])
+        x2Mutasi = Decode(kromosomBaru[5:])
 
-        # Jika hasil mutasi di luar batas, batalkan mutasi
-        if x1 < -10 or x1 > 10 or x2 < -10 or x2 > 10:
-            print()
-            print(f"Mutasi dibatalkan: hasil di luar batas -> x1: {x1}, x2: {x2}")
-            x1 = Decode(kromosomAsli[:5])
-            x2 = Decode(kromosomAsli[5:])
-            hasilMutasi.append((kromosomAsli, x1, x2))
+        if -10 <= x1Mutasi <= 10 and -10 <= x2Mutasi <= 10:
+            print(f"[Mutasi {i+1}] BERHASIL -> Kromosom: {kromosomBaru}   -> x1: {x1Mutasi}, x2: {x2Mutasi}")
+            hasilMutasi.append((kromosomBaru, x1Mutasi, x2Mutasi))
         else:
-            hasilMutasi.append((kromosomBaru, x1, x2))
+            print(f"[Mutasi {i+1}] GAGAL    -> Diluar batas Interval  -> x1: {x1Mutasi}, x2: {x2Mutasi}")
+            x1Asli = Decode(kromosomAsli[:5])
+            x2Asli = Decode(kromosomAsli[5:])
+            hasilMutasi.append((kromosomAsli, x1Asli, x2Asli))
+        i+=1
 
     return hasilMutasi
 
