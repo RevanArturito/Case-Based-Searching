@@ -25,9 +25,12 @@ def genetic_algorithm():
         print(f"\n===================================== Generation {generation + 1} =====================================")
 
         # TAHAP 1 - Evaluasi
+        Objective: List[float] = [ObjectiveFunction(p.x1, p.x2) for p in population]
         fitnessList: List[float] = [FitnessFunction(p.x1, p.x2, SumTotalFitness(population)) for p in population]
         CumFitnessList: List[float] = CumFitness(fitnessList)
         Interval: List[str] = IntervalRange(0, CumFitnessList)
+        printTahap1(population, Objective, fitnessList, CumFitnessList, Interval, len(population))
+
 
         # TAHAP 2 - Seleksi
         parents = selectParent(Interval, fitnessList, population)
