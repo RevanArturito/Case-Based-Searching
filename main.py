@@ -2,68 +2,65 @@ from MathFunction import *
 from pair import *
 from typing import List
 from header import *
-
-# 3 Pasang data
-DATA_COUNT = 3
-GENERATIONS = 1000
-CROSSOVER_RATE = 0.7
-MUTATION_RATE = 0.1
-
-# Fungsi untuk menginisialisasi generasi awal
-def init_population() -> List[Pair]:
-    return RandomVal(DATA_COUNT)
-
-# Fungsi GA utama
-def genetic_algorithm():
-    population = init_population()
-    bestX1 = None
-    bestX2 = None
-    bestObjectiveValue = 0  
-    bestGeneration = -1  
-
-    for generation in range(GENERATIONS):
-        print(f"\n===================================== Generation {generation + 1} =====================================")
-
-        # TAHAP 1 - Evaluasi
-        Objective: List[float] = [ObjectiveFunction(p.x1, p.x2) for p in population]
-        fitnessList: List[float] = [FitnessFunction(p.x1, p.x2, SumTotalFitness(population)) for p in population]
-        CumFitnessList: List[float] = CumFitness(fitnessList)
-        Interval: List[str] = IntervalRange(0, CumFitnessList)
-        printTahap1(population, Objective, fitnessList, CumFitnessList, Interval, len(population))
+from mainUtils import *
 
 
-        # TAHAP 2 - Seleksi
-        parents = selectParent(Interval, fitnessList, population)
-        printTahap2(parents)
-
-        # TAHAP 3 - Crossover
-        children = crossover(parents, CROSSOVER_RATE)
-        printCrossOver(children)
-
-        # TAHAP 4 - Mutasi menggunakan fungsi mutasi baru
-        mutation = mutasi(children, MUTATION_RATE)
-        printMutation(mutation)
-
-        # Pengecekan nilai terbaik setelah semua anak dicek
-        for krom, x1, x2 in mutation:
-            objectiveValue = CheckObjectiveFunction(x1, x2)
-            if objectiveValue < bestObjectiveValue:
-                bestObjectiveValue = objectiveValue
-                bestX1 = x1
-                bestX2 = x2
-                bestGeneration = generation + 1
-
-        # Populasi baru dari hasil mutasi
-        population = [Pair(x1, x2) for _, x1, x2 in mutation]
-        
-        
-
-    print("\n======================================= HASIL AKHIR =======================================")
-    print(f"Nilai x1 Terbaik: {bestX1}")
-    print(f"Nilai x2 Terbaik: {bestX2}")
-    print(f"Nilai Objective Terbaik: {bestObjectiveValue}")
-    print(f"Ditemukan pada Generasi ke: {bestGeneration}")
+bestChromosome = None
+bestFitness = float("inf")
+randomPopulation = RandomPopulation(POPULATIONS, CHROMOSOME_LENGTH)
 
 
-# Jalankan GA
-genetic_algorithm()
+# for i in range(0, POPULATIONS):
+#     print(randomPopulation[i], " ", Fitness(randomPopulation[i]))
+
+for i in range(1, MAX_GENERATIONS):
+    print()
+    print(f"======================= GENERASI {i} =======================")
+    parent1, parent2 = selectParents(randomPopulation, 3)
+    print(parent1, " ", parent2)
+    print(Decode(parent1[:BIT_PER_GEN]), " ", Decode(parent1[BIT_PER_GEN:]), " ", Decode(parent2[:BIT_PER_GEN]), " ", Decode(parent2[BIT_PER_GEN:]))
+    
+
+    mutationBit = math.floor(MUTATION_RATE * CHROMOSOME_LENGTH)
+    child1, child2 = singlePointCrossover(parent1, parent2, CROSSOVER_RATE)
+    print(f"Stelah krosover : {child1} {child2}")
+    print(f"sbelum mutasi : {child1}")
+    print(f"sbelum mutasi : {child2}")
+    
+    selected1 = Mutation(child1, mutationBit)
+    selected2 = Mutation(child2, mutationBit)
+    # print(f"stelah mutasi : {selected1}")
+    # print(f"stelah mutasi : {selected2}")
+
+    # print(f"objective gen {i} {Objective(Decode(selected1[:8]), Decode(selected1[8:]))}, {Objective(Decode(selected2[:8]), Decode(selected2[8:]))}")
+
+    # Hitung objective untuk semua individu
+    fitnessValues = [Objective(Decode(ind[:BIT_PER_GEN]), Decode(ind[BIT_PER_GEN:])) for ind in randomPopulation]
+
+    # Ganti dua terburuk dengan hasil mutasi
+    worstIndices = sorted(
+        range(len(fitnessValues)), 
+        key=lambda k: fitnessValues[k], 
+        reverse=True
+    )
+    randomPopulation[worstIndices[0]] = selected1
+    randomPopulation[worstIndices[1]] = selected2
+
+    # Cek kromosom terbaik sejauh ini
+    currentBestIndex = min(range(len(fitnessValues)), key=lambda k: fitnessValues[k])
+    currentBestFitness = fitnessValues[currentBestIndex]
+    if currentBestFitness < bestFitness:
+        bestGeneration = i
+        bestFitness = currentBestFitness
+        bestChromosome = randomPopulation[currentBestIndex]
+
+
+x = Decode(bestChromosome[:BIT_PER_GEN])
+y = Decode(bestChromosome[BIT_PER_GEN:])
+print(f"\nKromosom terbaik selama seluruh generasi:")
+print(f"{bestChromosome} -> x={x}, y={y}, Objective={bestFitness} pada generasi ke {bestGeneration}")
+  
+  
+# print(Objective(Decode("00001"),Decode("01101")))
+
+
