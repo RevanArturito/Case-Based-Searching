@@ -6,7 +6,7 @@ from mainUtils import *
 
 
 bestChromosome = None
-bestFitness = float("inf")
+bestObjective = float("inf")
 randomPopulation = RandomPopulation(POPULATIONS, CHROMOSOME_LENGTH)
 
 
@@ -35,30 +35,30 @@ for i in range(1, MAX_GENERATIONS):
     # print(f"objective gen {i} {Objective(Decode(selected1[:8]), Decode(selected1[8:]))}, {Objective(Decode(selected2[:8]), Decode(selected2[8:]))}")
 
     # Hitung objective untuk semua individu
-    fitnessValues = [Objective(Decode(ind[:BIT_PER_GEN]), Decode(ind[BIT_PER_GEN:])) for ind in randomPopulation]
+    objectiveValues = [Objective(Decode(ind[:BIT_PER_GEN]), Decode(ind[BIT_PER_GEN:])) for ind in randomPopulation]
 
     # Ganti dua terburuk dengan hasil mutasi
     worstIndices = sorted(
-        range(len(fitnessValues)), 
-        key=lambda k: fitnessValues[k], 
+        range(len(objectiveValues)), 
+        key=lambda k: objectiveValues[k], 
         reverse=True
     )
     randomPopulation[worstIndices[0]] = selected1
     randomPopulation[worstIndices[1]] = selected2
 
     # Cek kromosom terbaik sejauh ini
-    currentBestIndex = min(range(len(fitnessValues)), key=lambda k: fitnessValues[k])
-    currentBestFitness = fitnessValues[currentBestIndex]
-    if currentBestFitness < bestFitness:
+    currentBestIndex = min(range(len(objectiveValues)), key=lambda k: objectiveValues[k])
+    currentBestObjective = objectiveValues[currentBestIndex]
+    if currentBestObjective < bestObjective:
         bestGeneration = i
-        bestFitness = currentBestFitness
+        bestObjective = currentBestObjective
         bestChromosome = randomPopulation[currentBestIndex]
 
 
 x = Decode(bestChromosome[:BIT_PER_GEN])
 y = Decode(bestChromosome[BIT_PER_GEN:])
 print(f"\nKromosom terbaik selama seluruh generasi:")
-print(f"{bestChromosome} -> x={x}, y={y}, Objective={bestFitness} pada generasi ke {bestGeneration}")
+print(f"{bestChromosome} -> x={x}, y={y}, Objective={bestObjective} pada generasi ke {bestGeneration}")
   
   
 # print(Objective(Decode("00001"),Decode("01101")))
